@@ -1,22 +1,28 @@
 package com.rfid.integration.config;
 
 import com.rfid.integration.websocket.RfidEndpoint;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
 /**
- * Registers the raw WebSocket handler — no STOMP, no SockJS broker.
- * Clients connect with plain WebSocket API, no external JS library needed.
+ * Registers the raw WebSocket handler at /rfid-stream.
+ * No STOMP, no SockJS — clients use: new WebSocket("ws://host/rfid-stream?readerIp=x.x.x.x")
+ *
+ * CHANGED:
+ * - Constructor injection instead of @Autowired field injection
+ * - Removed old ServerEndpointExporter bean (not needed with TextWebSocketHandler)
  */
 @Configuration
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
 
-    @Autowired
-    private RfidEndpoint rfidEndpoint;
+    private final RfidEndpoint rfidEndpoint;
+
+    public WebSocketConfig(RfidEndpoint rfidEndpoint) {
+        this.rfidEndpoint = rfidEndpoint;
+    }
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
