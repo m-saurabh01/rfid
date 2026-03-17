@@ -1,0 +1,18 @@
+# Build output
+target/
+
+# Eclipse IDE
+.classpath
+.project
+.settings/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Old disposable source files
+dispose/
