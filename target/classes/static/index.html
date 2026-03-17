@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RFID Reader Console</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>RFID Reader Console</h1>
+            <span id="health-badge" class="badge badge-offline">Offline</span>
+        </header>
+
+        <!-- Control Panel -->
+        <section class="panel">
+            <h2>Reader Control</h2>
+            <div class="control-row">
+                <input type="text" id="reader-ip" placeholder="Reader IP (e.g. 192.168.1.100)" />
+                <button id="btn-connect" class="btn btn-primary">Connect &amp; Start</button>
+                <button id="btn-stop" class="btn btn-warn" disabled>Stop</button>
+                <button id="btn-disconnect" class="btn btn-danger" disabled>Disconnect</button>
+            </div>
+            <div class="status-row">
+                <span>Status:</span>
+                <span id="reader-status" class="status-text">Not connected</span>
+                <span class="separator">|</span>
+                <span>WebSocket:</span>
+                <span id="ws-status" class="status-text">Closed</span>
+                <span class="separator">|</span>
+                <span>Tags:</span>
+                <span id="tag-count">0</span>
+            </div>
+        </section>
+
+        <!-- Tag Table -->
+        <section class="panel">
+            <div class="table-header">
+                <h2>Tag Events</h2>
+                <button id="btn-clear" class="btn btn-small">Clear</button>
+            </div>
+            <div class="table-wrapper">
+                <table id="tag-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>EPC</th>
+                            <th>Antenna</th>
+                            <th>RSSI (dBm)</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tag-body">
+                        <tr class="empty-row"><td colspan="5">No tags received yet</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Log -->
+        <section class="panel">
+            <div class="table-header">
+                <h2>Event Log</h2>
+                <button id="btn-clear-log" class="btn btn-small">Clear</button>
+            </div>
+            <div id="log" class="log-box"></div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
