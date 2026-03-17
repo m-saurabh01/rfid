@@ -1,0 +1,15 @@
+com/rfid/integration/core/ReaderConnectionManager.class
+com/rfid/integration/websocket/RfidEndpoint.class
+com/rfid/integration/core/ReaderRegistry.class
+com/rfid/integration/lifecycle/AppShutdownListener.class
+com/rfid/integration/model/TagDataDTO.class
+com/rfid/integration/service/InventoryService.class
+com/rfid/integration/device/LLRPReaderAdapter.class
+com/rfid/integration/RfidApplication.class
+com/rfid/integration/filter/CORSFilter.class
+com/rfid/integration/rest/ReaderController.class
+com/rfid/integration/config/WebSocketConfig.class
+com/rfid/integration/rest/ReaderStatusController.class
+com/rfid/integration/core/TagEventDispatcher.class
+com/rfid/integration/rest/HealthController.class
+com/rfid/integration/core/ReaderNode.class
