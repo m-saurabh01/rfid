@@ -10,5 +10,6 @@ com/rfid/integration/config/WebSocketConfig.class
 com/rfid/integration/rest/ReaderStatusController.class
 com/rfid/integration/core/TagEventDispatcher.class
 com/rfid/integration/rest/HealthController.class
+com/rfid/integration/rest/SimulationController.class
 com/rfid/integration/config/CorsConfig.class
 com/rfid/integration/core/ReaderNode.class

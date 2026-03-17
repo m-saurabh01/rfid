@@ -16,11 +16,16 @@
     var logBox        = document.getElementById("log");
 
     /* ── State ── */
+    var btnDemo      = document.getElementById("btn-demo");
+
+    /* ── State ── */
     var ws        = null;
     var readerIp  = "";
     var count     = 0;
     var rowNum    = 0;
     var MAX_ROWS  = 500;
+    var demoMode  = false;
+    var DEMO_IP   = "10.0.0.99";
 
     /* ── Helpers ── */
     function baseUrl() {
@@ -135,9 +140,14 @@
             logMsg("WebSocket open", "ok");
             setButtons(false, true, true);
 
-            /* Auto-start inventory */
-            apiPost("/reader/start/" + encodeURIComponent(ip), "Inventory started on " + ip);
-            setReaderStatus("Reading");
+            /* Auto-start inventory (real or simulated) */
+            if (demoMode) {
+                apiPost("/simulate/start/" + encodeURIComponent(ip), "Simulation started on " + ip);
+                setReaderStatus("Simulating");
+            } else {
+                apiPost("/reader/start/" + encodeURIComponent(ip), "Inventory started on " + ip);
+                setReaderStatus("Reading");
+            }
         };
 
         ws.onmessage = function (evt) {
@@ -159,14 +169,19 @@
             setReaderStatus("Disconnected");
             logMsg("WebSocket closed (code " + evt.code + ")", "warn");
             setButtons(true, false, false);
+            btnDemo.disabled = false;
         };
     }
 
     function disconnectWs() {
         if (!ws) return;
-        /* Stop inventory first, then close */
+        /* Stop inventory/simulation first, then close */
         if (readerIp) {
-            apiPost("/reader/stop/" + encodeURIComponent(readerIp), "Inventory stopped");
+            if (demoMode) {
+                apiPost("/simulate/stop/" + encodeURIComponent(readerIp), "Simulation stopped");
+            } else {
+                apiPost("/reader/stop/" + encodeURIComponent(readerIp), "Inventory stopped");
+            }
         }
         ws.close();
     }
@@ -181,7 +196,11 @@
 
     btnStop.addEventListener("click", function () {
         if (!readerIp) return;
-        apiPost("/reader/stop/" + encodeURIComponent(readerIp), "Inventory stopped on " + readerIp);
+        if (demoMode) {
+            apiPost("/simulate/stop/" + encodeURIComponent(readerIp), "Simulation stopped on " + readerIp);
+        } else {
+            apiPost("/reader/stop/" + encodeURIComponent(readerIp), "Inventory stopped on " + readerIp);
+        }
         setReaderStatus("Stopped");
     });
 
@@ -191,6 +210,23 @@
 
     btnClear.addEventListener("click", clearTable);
     btnClearLog.addEventListener("click", clearLog);
+
+    /* Demo mode — prefills a fake IP and sets simulation flag */
+    btnDemo.addEventListener("click", function () {
+        if (ws) { logMsg("Disconnect first before toggling demo mode", "warn"); return; }
+        demoMode = !demoMode;
+        if (demoMode) {
+            ipInput.value = DEMO_IP;
+            btnDemo.textContent = "Demo ON";
+            btnDemo.style.background = "#8b5cf6";
+            logMsg("Demo mode enabled — connect to start simulated tags", "info");
+        } else {
+            ipInput.value = "";
+            btnDemo.textContent = "Demo Mode";
+            btnDemo.style.background = "";
+            logMsg("Demo mode disabled", "info");
+        }
+    });
 
     /* Enter key on input */
     ipInput.addEventListener("keydown", function (e) {

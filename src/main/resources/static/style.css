@@ -116,6 +116,9 @@ header h1 {
 .btn-danger { background: #da3633; color: #fff; }
 .btn-danger:hover:not(:disabled) { background: #f85149; }
 
+.btn-demo { background: #6e40c9; color: #fff; }
+.btn-demo:hover:not(:disabled) { background: #8b5cf6; }
+
 .btn-small {
     padding: 4px 10px;
     font-size: 12px;
